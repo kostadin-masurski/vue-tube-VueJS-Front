@@ -1,9 +1,9 @@
 <template>
     <header>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-            <a class="navbar-brand" href="/home">
+            <router-link to="Home" class="navbar-brand">
                 <img alt="Vue-tube-logo" height="45" src="../../assets/Vue-tube-logo-big.png">
-            </a>
+            </router-link>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04"
                     aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">

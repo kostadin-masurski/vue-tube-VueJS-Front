@@ -2,14 +2,13 @@
   <div id="app">
     <app-navigation></app-navigation>
     <hr />
-    <app-home></app-home>
+    <router-view></router-view>
     <hr />
     <app-footer></app-footer>
   </div>
 </template>
 
 <script>
-import AppHome from "./components/Home.vue";
 import AppNavigation from "./components/core/Navigation.vue";
 import AppFooter from "./components/core/Footer.vue";
 
@@ -17,7 +16,6 @@ export default {
   name: "App",
   components: {
     AppNavigation,
-    AppHome,
     AppFooter
   }
 };
