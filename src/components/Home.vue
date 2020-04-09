@@ -2,10 +2,10 @@
   <div class="w-100">
     <div class="row">
       <div class="col-sm-12 col-md-2">
-        <app-playlists></app-playlists>
+        <app-playlists :playlists="playlists" @selectPlaylist="selectPlaylistHandler($event)"></app-playlists>
       </div>
       <div class="col-sm-12 col-md-2">
-        <app-songs></app-songs>
+        <app-songs :songs="songs" @selectSong="selectSongHandler($event)"></app-songs>
       </div>
       <div class="col-sm-12 col-md-8">
         <!-- <div v-if="!slectedSong && !selectedPlaylist" class="row home-div"> -->
@@ -23,6 +23,7 @@
 <script>
 import AppPlaylists from "./items/Playlists.vue";
 import AppSongs from "./items/Songs.vue";
+import globalStore from '../store/global';
 
 export default {
   name: "Home",
@@ -30,7 +31,22 @@ export default {
     AppPlaylists,
     AppSongs
   },
-  methods: {}
+  data() {
+    return {
+      playlists: globalStore.playlists,
+      songs: globalStore.selectedPlayistSongs
+    }
+  },
+  methods: {
+    selectPlaylistHandler(idx) {
+      globalStore.setSelectedPlaylist(globalStore.playlists[idx]);
+      this.songs = globalStore.selectedPlayistSongs;
+    },
+    selectSongHandler(idx) {
+      globalStore.setSelectedSong(globalStore.selectedPlayistSongs[idx]);
+      console.log(globalStore.selectedSong.name)
+    }
+  }
 };
 </script>
 

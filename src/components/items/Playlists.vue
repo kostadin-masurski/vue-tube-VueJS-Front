@@ -3,7 +3,12 @@
     <h1>Playlists</h1>
     <div class="row scroll">
       <div v-if="playlists" class="col-xs-12">
-        <a v-for="playlist in playlists" :key="playlist.id" @click="selectPlaylist(playlist)" class="list-group-item clearfix">
+        <a
+          v-for="(playlist, index) in playlists"
+          :key="playlist.id"
+          @click="selectPlaylist(index)"
+          :class="{selected: index === selectedPlaylistIndex, 'list-group-item clearfix': true}"
+        >
           <div class="pull-left">
             <h4 class="list-group-item-heading">{{playlist.name}}</h4>
           </div>
@@ -17,21 +22,26 @@
 </template>
 
 <script>
-import {PlaylistService} from "../../services/PlaylistService";
 
 export default {
   name: "Playlists",
-  created: PlaylistService.loadAll,
-    data() {
-        return {
-            playlists: PlaylistService.playlists
-        };
-    },
-    methods: {
-      selectPlaylist(playlist) {
-        PlaylistService.selectedPlaylist = playlist;
-      }
+  props: {
+    playlists: {
+      type: Array,
+      required: true
     }
+  },
+  data() {
+    return {
+      selectedPlaylistIndex: -1
+    };
+  },
+  methods: {
+    selectPlaylist(idx) {
+      this.selectedPlaylistIndex = idx;
+      this.$emit('selectPlaylist', idx);
+    }
+  }
 };
 </script>
 

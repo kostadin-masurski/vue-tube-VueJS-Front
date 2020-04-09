@@ -11,9 +11,11 @@
 <script>
 import AppNavigation from "./components/core/Navigation.vue";
 import AppFooter from "./components/core/Footer.vue";
+import { PlaylistService } from "./services/PlaylistService";
 
 export default {
   name: "App",
+  created: PlaylistService.loadAll,
   components: {
     AppNavigation,
     AppFooter
@@ -23,13 +25,13 @@ export default {
 
 <style>
 html {
-    margin: 0px;
-    height: 100%;
-    width: 100%;
-    scroll-behavior: smooth;
+  margin: 0px;
+  height: 100%;
+  width: 100%;
+  scroll-behavior: smooth;
 }
 
-body{
+body {
   /* padding: 0.5%; */
   min-height: 100%;
   /* font-family: inherit; */
@@ -37,41 +39,45 @@ body{
   overflow-x: hidden;
 }
 
-nav{
-    position: sticky;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1;
+nav {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
 }
 
-.scroll{
-    height: 100vh;
-    width: 15vw;
-    overflow: hidden;
-    overflow-y: scroll;
+.scroll {
+  height: 100vh;
+  width: 15vw;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 
 .img-details {
-    display: block;
-    margin: 0 auto;
-    border-radius: 6px;
-    box-shadow: 3px 3px gray;
-    height: 500px;
+  display: block;
+  margin: 0 auto;
+  border-radius: 6px;
+  box-shadow: 3px 3px gray;
+  height: 500px;
 }
 
 .img-details:hover {
-    box-shadow: 5px 5px gray;
+  box-shadow: 5px 5px gray;
 }
 
-.pull-right img{
-    max-height: 100;
-    display: block;
-    border-radius: 6px;
+.pull-right img {
+  max-height: 100;
+  display: block;
+  border-radius: 6px;
 }
 
-.list-group-item:hover{
-    transform: scale(1.1);
-    cursor: pointer;
+.list-group-item:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.selected {
+  background-color: lightgrey;
 }
 </style>
