@@ -4,9 +4,9 @@ export const NOT_SET = Symbol('NOT_SET');
 const global = new Vue({
     data: {
         playlists: [],
-        selectedPlayist: {},
+        selectedPlaylist: {},
         allSongs: [],
-        selectedPlayistSongs: [],
+        selectedPlaylistSongs: [],
         selectedSong: {},
         user: NOT_SET
     },
@@ -15,12 +15,12 @@ const global = new Vue({
             this.playlists = playlists;
         },
         setSelectedPlaylist(playlist) {
-            this.selectedPlayist = playlist;
-            this.selectedPlayistSongs = playlist.songs;
+            this.selectedPlaylist = playlist;
+            this.selectedPlaylistSongs = playlist ? playlist.songs : this.allSongs;
         },
         setAllSongs(songs) {
             this.allSongs = songs;
-            this.selectedPlayistSongs = songs;
+            this.selectedPlaylistSongs = songs;
         },
         setSelectedSong(song) {
             this.selectedSong = song;

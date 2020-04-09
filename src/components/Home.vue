@@ -2,49 +2,63 @@
   <div class="w-100">
     <div class="row">
       <div class="col-sm-12 col-md-2">
-        <app-playlists :playlists="playlists" @selectPlaylist="selectPlaylistHandler($event)"></app-playlists>
+        <app-playlists :playlists="playlists" 
+        @selectPlaylist="selectPlaylistHandler($event)"></app-playlists>
       </div>
       <div class="col-sm-12 col-md-2">
-        <app-songs :songs="songs" @selectSong="selectSongHandler($event)"></app-songs>
+        <app-songs :songs="songs" 
+        @selectSong="selectSongHandler($event)" @listAllSongs="listAllSongsHandler($event)"></app-songs>
       </div>
       <div class="col-sm-12 col-md-8">
-        <!-- <div v-if="!slectedSong && !selectedPlaylist" class="row home-div"> -->
-        <div v-if="true" class="home-div">
-          <h1 class="text-center home-h1">
-            U Tuba - Your own YouTube playlists!
-            <br />No advertising, No registration! Enjoy!
-          </h1>
-        </div>
+        <app-player v-if="selectedSong"
+        :selectedSong="selectedSong" :selectedPlaylist="selectedPlaylist"></app-player>
+        <app-selected-playlist v-if="selectedPlaylist && !selectedSong"
+        :selectedPlaylist="selectedPlaylist"></app-selected-playlist>
+        <app-banner v-if="!selectedPlaylist && !selectedSong"></app-banner>
+        <hr />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import globalStore from '../store/global';
 import AppPlaylists from "./items/Playlists.vue";
 import AppSongs from "./items/Songs.vue";
-import globalStore from '../store/global';
+import AppSelectedPlaylist from "./items/Selected-playlist.vue";
+import AppPlayer from "./items/Player.vue";
+import AppBanner from "./items/Banner.vue";
 
 export default {
   name: "Home",
   components: {
     AppPlaylists,
-    AppSongs
+    AppSongs,
+    AppSelectedPlaylist,
+    AppPlayer,
+    AppBanner
   },
   data() {
     return {
       playlists: globalStore.playlists,
-      songs: globalStore.selectedPlayistSongs
+      songs: globalStore.selectedPlaylistSongs,
+      selectedPlaylist: false,
+      selectedSong: false
     }
   },
   methods: {
     selectPlaylistHandler(idx) {
       globalStore.setSelectedPlaylist(globalStore.playlists[idx]);
-      this.songs = globalStore.selectedPlayistSongs;
+      this.songs = globalStore.selectedPlaylistSongs;
+      this.selectedPlaylist = globalStore.selectedPlaylist;
     },
     selectSongHandler(idx) {
-      globalStore.setSelectedSong(globalStore.selectedPlayistSongs[idx]);
-      console.log(globalStore.selectedSong.name)
+      globalStore.setSelectedSong(globalStore.selectedPlaylistSongs[idx]);
+      this.selectedSong = globalStore.selectedSong;
+    },
+    listAllSongsHandler() {
+      globalStore.setSelectedPlaylist();
+      this.songs = globalStore.selectedPlaylistSongs;
     }
   }
 };
@@ -55,10 +69,6 @@ export default {
   background-image: url(../assets/151642953.jpg);
   background-size: cover;
   height: 100vh;
-}
-
-.home-h1 {
-  color: crimson;
 }
 
 .small-playlist {

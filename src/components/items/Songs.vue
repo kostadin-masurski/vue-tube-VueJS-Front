@@ -1,7 +1,9 @@
 <template>
   <div class="col-3">
     <h1>Songs</h1>
-    <input @click="listAllSongs" type="form-control" class="btn btn-dark" placeholder="All songs" />
+    <div @click="listAllSongs">
+    <input type="form-control" disabled class="btn btn-dark" placeholder="All songs" />
+    </div>
     <div class="row scroll">
       <div v-if="songs" class="col-xs-12">
         <a
@@ -39,10 +41,10 @@ export default {
   methods: {
     selectSong(idx) {
       this.selectedSongIndex = idx;
-      this.$emit('selectSong', idx)
+      this.$emit('selectSong', idx);
     },
     listAllSongs() {
-      console.log('listed All ')
+      this.$emit('listAllSongs');
     }
   }
 };
