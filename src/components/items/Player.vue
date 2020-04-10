@@ -2,7 +2,7 @@
   <div>
     <div class="row">
       <div class="col-xs-12">
-        <h1 class="text-center">{{selectedSong.artist}} - {{selectedSong.name}}</h1>
+        <h1 class="text-left">{{selectedSong.artist}} - {{selectedSong.name}}</h1>
       </div>
     </div>
     <hr />
@@ -11,7 +11,7 @@
         allowfullscreen></iframe>
     <hr />
       <app-selected-playlist v-if="selectedPlaylist"
-        :selectedPlaylist="selectedPlaylist"></app-selected-playlist>
+        :selectedPlaylist="selectedPlaylist" :selectedSong="selectedSong"></app-selected-playlist>
   </div>
 </template>
 
@@ -37,6 +37,6 @@ export default {
 <style scoped>
 iframe {
     width: 98%;
-    height: 60vh;
+    height: 55vh;
 }
 </style>

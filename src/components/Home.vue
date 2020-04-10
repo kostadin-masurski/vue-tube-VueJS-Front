@@ -59,24 +59,8 @@ export default {
     listAllSongsHandler() {
       globalStore.setSelectedPlaylist();
       this.songs = globalStore.selectedPlaylistSongs;
+      this.selectedPlaylist = false;
     }
   }
 };
 </script>
-
-<style scoped>
-.home-div {
-  background-image: url(../assets/151642953.jpg);
-  background-size: cover;
-  height: 100vh;
-}
-
-.small-playlist {
-  height: 10vh;
-  margin: 1vw;
-}
-
-.small-playlist-div {
-  display: inline-flex;
-}
-</style>

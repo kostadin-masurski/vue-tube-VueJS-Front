@@ -6,11 +6,11 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 small-plalist-div">
+      <div :class="{'small-playlist-div': selectedSong, 'col-xs-12': true}">
         <img
           :src="selectedPlaylist.imgUrl"
           alt="Playlist Image"
-          class="img-responsive img-details small-paylist"
+          :class="{'small-playlist': selectedSong, 'img-responsive img-details': true}"
         />
         <h2 class="text-bold amount">
           <span :style="{color: color}">{{selectedPlaylist.rate}}</span>/10
@@ -46,12 +46,26 @@ export default {
         selectedPlaylist: {
             type: Object,
             required: true
+        },
+        selectedSong: {
+            type: Object
         }
     },
     data() {
         return {
-            color: 'green'
+          color: 'green'
         }
     }
 }
 </script>
+
+<style scoped>
+.small-playlist {
+  height: 10vh;
+  margin: 1vw;
+}
+
+.small-playlist-div {
+  display: inline-flex;
+}
+</style>

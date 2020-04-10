@@ -8,6 +8,11 @@
 </template>
 
 <style scoped>
+.home-div {
+  background-image: url(../../assets/151642953.jpg);
+  background-size: cover;
+  height: 90vh;
+}
 .home-h1 {
   color: crimson;
 }

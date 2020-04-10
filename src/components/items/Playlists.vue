@@ -1,13 +1,13 @@
 <template>
   <div class="col-3">
-    <h1>Playlists</h1>
+    <h1 class="text-left">Playlists</h1>
     <div class="row scroll">
       <div v-if="playlists" class="col-xs-12">
         <a
           v-for="(playlist, index) in playlists"
           :key="playlist.id"
           @click="selectPlaylist(index)"
-          :class="{selected: index === selectedPlaylistIndex, 'list-group-item clearfix': true}"
+          class="list-group-item clearfix"
         >
           <div class="pull-left">
             <h4 class="list-group-item-heading">{{playlist.name}}</h4>

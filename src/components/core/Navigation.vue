@@ -1,7 +1,7 @@
 <template>
     <header>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-            <router-link to="Home" class="navbar-brand">
+            <router-link to="/home" class="navbar-brand">
                 <img alt="Vue-tube-logo" height="45" src="../../assets/Vue-tube-logo-big.png">
             </router-link>
 

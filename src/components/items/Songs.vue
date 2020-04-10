@@ -10,7 +10,7 @@
           v-for="(song, index) in songs"
           :key="song.id"
           @click="selectSong(index)"
-          :class="{selected: index === selectedSongIndex, 'list-group-item clearfix': true}"
+          class="list-group-item clearfix"
         >
           <div class="pull-left">
             <h6 class="list-group-item-heading">{{song.artist}} - {{song.name}}</h6>
