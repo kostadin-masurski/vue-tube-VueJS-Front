@@ -15,11 +15,8 @@
         />
         <template v-if="$v.name.$error">
           <div v-if="!$v.name.required" class="text-danger">Name is required!</div>
-          <div v-if="!$v.name.minLength" class="text-danger">Name should be more than 3 symboils!</div>
-          <div
-            v-if="!$v.name.maxLength"
-            class="text-danger"
-          >Name should not be more than 50 symboils!</div>
+          <div v-if="!$v.name.minLength" class="text-danger">Name should be more than 3 symbols!</div>
+          <div v-if="!$v.name.maxLength" class="text-danger">Name should not be more than 50 symbols!</div>
         </template>
       </div>
       <div class="form-group">
@@ -36,7 +33,7 @@
           <div v-if="!$v.imgUrl.url" class="text-danger">Enter valid URL</div>
         </template>
       </div>
-      <button type="submit" class="btn btn-primary">Create</button>
+      <button class="btn btn-primary">Create</button>
     </form>
   </div>
 </template>
@@ -95,7 +92,7 @@ export default {
 .create-div {
   margin: 2vw;
   padding: 5vw;
-  padding-right: 40vw;
+  padding-right: 20vw;
   background-image: url(../../assets/Vue-tube-logo-big.png);
   background-size: contain;
   background-repeat: no-repeat;

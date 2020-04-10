@@ -11,6 +11,10 @@ export const PlaylistService = {
 
     create(playlist){
         return Vue.axios.post('http://localhost:8080/api/playlists/create', playlist);
+    },
+
+    edit(playlist){
+        return Vue.axios.post('http://localhost:8080/api/playlists/edit', playlist);
     }
 
 }

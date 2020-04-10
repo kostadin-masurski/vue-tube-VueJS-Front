@@ -2,7 +2,23 @@
   <div id="app">
     <app-navigation></app-navigation>
     <hr />
-    <router-view></router-view>
+    <div class="w-100">
+      <div class="row">
+        <div class="col-sm-12 col-md-2">
+          <app-playlists :playlists="playlists" 
+          @selectPlaylist="selectPlaylistHandler($event)"></app-playlists>
+        </div>
+        <div class="col-sm-12 col-md-2">
+          <app-songs :songs="songs" 
+          @selectSong="selectSongHandler($event)" @listAllSongs="listAllSongsHandler($event)"></app-songs>
+        </div>
+        <div class="col-sm-12 col-md-8">
+        <router-view></router-view>
+        <hr />
+        </div>
+      </div>
+    </div>
+    <!-- <router-view></router-view> -->
     <hr />
     <app-footer></app-footer>
   </div>
@@ -10,15 +26,46 @@
 
 <script>
 import AppNavigation from "./components/core/Navigation.vue";
-import AppFooter from "./components/core/Footer.vue";
 import { PlaylistService } from "./services/PlaylistService";
+import globalStore from './store/global';
+import AppPlaylists from "./components/items/Playlists.vue";
+import AppSongs from "./components/items/Songs.vue";
+import AppFooter from "./components/core/Footer.vue";
 
 export default {
   name: "App",
   created: PlaylistService.loadAll,
   components: {
     AppNavigation,
+    AppPlaylists,
+    AppSongs,
     AppFooter
+  },
+  data() {
+    return {
+      playlists: globalStore.playlists,
+      songs: globalStore.selectedPlaylistSongs,
+      selectedPlaylistIndex: false
+    }
+  },
+  methods: {
+    selectPlaylistHandler(idx) {
+      if(this.selectedPlaylistIndex === idx) { return; }
+      globalStore.setSelectedPlaylist(globalStore.playlists[idx]);
+      this.songs = globalStore.selectedPlaylistSongs;
+      this.selectedPlaylistIndex = idx;
+      this.$router.push({path: 'home', query: {playlist: idx, song: 'no change'}})
+    },
+    selectSongHandler(idx) {
+      if(this.$route.query.song === idx) { return; }
+      globalStore.setSelectedSong(globalStore.selectedPlaylistSongs[idx]);
+      this.$router.push({path: 'home', query: {playlist: this.selectedPlaylistIndex, song: idx}})
+    },
+    listAllSongsHandler() {
+      globalStore.setSelectedPlaylist();
+      this.songs = globalStore.selectedPlaylistSongs;
+      this.$router.push({path: 'home', query: {playlist: this.selectedPlaylistIndex, song: 'no change'}})
+    }
   }
 };
 </script>
