@@ -5,11 +5,9 @@
         <h1 class="text-left">{{selectedSong.artist}} - {{selectedSong.name}}</h1>
       </div>
     </div>
-    <hr />
-    <iframe :src="'https://www.youtube.com/embed/' + selectedSong.youtubeIdent" 
-        frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope" 
-        allowfullscreen></iframe>
-    <hr />
+    <iframe :src="'https://www.youtube.com/embed/' + selectedSong.youtubeIdent" frameborder="0" 
+        allow="accelerometer; autoplay; encrypted-media; gyroscope" allowfullscreen>
+        </iframe>
       <app-selected-playlist v-if="selectedPlaylist"
         :selectedPlaylist="selectedPlaylist" :selectedSong="selectedSong"></app-selected-playlist>
   </div>

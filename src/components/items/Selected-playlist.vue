@@ -33,7 +33,7 @@
           <button type="button" class="btn btn-success">
             Rate Playlist
           </button>
-          <a href="/edit" class="btn btn-primary">Edit Playlist</a>
+          <router-link to="/playlist/edit" class="btn btn-primary">Edit Playlist</router-link>
         </form>
       </div>
     </div>

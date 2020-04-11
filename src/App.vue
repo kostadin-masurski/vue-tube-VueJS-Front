@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <app-navigation></app-navigation>
-    <hr />
     <div class="w-100">
       <div class="row">
         <div class="col-sm-12 col-md-2">
@@ -13,13 +12,15 @@
           @selectSong="selectSongHandler($event)" @listAllSongs="listAllSongsHandler($event)"></app-songs>
         </div>
         <div class="col-sm-12 col-md-8">
+        <iframe v-if="selectedSong && this.$route.path !=='/home'" 
+        :src="'https://www.youtube.com/embed/' + selectedSong.youtubeIdent + '?autoplay=1'" 
+        frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope" allowfullscreen>
+        </iframe>
         <router-view></router-view>
         <hr />
         </div>
       </div>
     </div>
-    <!-- <router-view></router-view> -->
-    <hr />
     <app-footer></app-footer>
   </div>
 </template>
@@ -45,26 +46,33 @@ export default {
     return {
       playlists: globalStore.playlists,
       songs: globalStore.selectedPlaylistSongs,
-      selectedPlaylistIndex: false
+      selectedPlaylistIndex: false,
+      selectedSong: false
     }
   },
   methods: {
     selectPlaylistHandler(idx) {
-      if(this.selectedPlaylistIndex === idx) { return; }
       globalStore.setSelectedPlaylist(globalStore.playlists[idx]);
       this.songs = globalStore.selectedPlaylistSongs;
       this.selectedPlaylistIndex = idx;
+      if(this.$route.path !== '/home' || this.$route.query.playlist === idx) { return; }
       this.$router.push({path: 'home', query: {playlist: idx, song: 'no change'}})
     },
     selectSongHandler(idx) {
-      if(this.$route.query.song === idx) { return; }
       globalStore.setSelectedSong(globalStore.selectedPlaylistSongs[idx]);
+      this.selectedSong = globalStore.selectedPlaylistSongs[idx];
+      if(this.$route.path !== '/home' || this.$route.query.song === idx) { return; }
+      if(this.$route.query.playlist === 'all') {
+        this.$router.push({path: 'home', query: {playlist: 'all', song: idx}});
+        return;
+      }
       this.$router.push({path: 'home', query: {playlist: this.selectedPlaylistIndex, song: idx}})
     },
     listAllSongsHandler() {
       globalStore.setSelectedPlaylist();
       this.songs = globalStore.selectedPlaylistSongs;
-      this.$router.push({path: 'home', query: {playlist: this.selectedPlaylistIndex, song: 'no change'}})
+      if(this.$route.path !== '/home' || this.$route.query.playlist === 'all') { return; }
+      this.$router.push({path: 'home', query: {playlist: 'all', song: 'no change'}})
     }
   }
 };
@@ -94,8 +102,14 @@ nav {
   z-index: 1;
 }
 
+iframe {
+  width: 50%;
+  height: 30%;
+  padding: 0.4%;
+}
+
 .scroll {
-  height: 100vh;
+  height: 79vh;
   width: 15vw;
   overflow: hidden;
   overflow-y: scroll;
@@ -120,8 +134,9 @@ nav {
 }
 
 .list-group-item:hover {
-  transform: scale(1.1);
+  transform: scale(1.2);
   cursor: pointer;
+  background-color: lightgrey;
 }
 
 .selected {
