@@ -55,23 +55,23 @@ export default {
       globalStore.setSelectedPlaylist(globalStore.playlists[idx]);
       this.songs = globalStore.selectedPlaylistSongs;
       this.selectedPlaylistIndex = idx;
-      if(this.$route.path !== '/home' || this.$route.query.playlist === idx) { return; }
-      this.$router.push({path: 'home', query: {playlist: idx, song: 'no change'}})
+      if(this.$route.query.playlist === idx) { return; }
+      this.$router.push({query: {playlist: idx, song: 'no change'}})
     },
     selectSongHandler(idx) {
       globalStore.setSelectedSong(globalStore.selectedPlaylistSongs[idx]);
       this.selectedSong = globalStore.selectedPlaylistSongs[idx];
-      if(this.$route.path !== '/home' || this.$route.query.song === idx) { return; }
+      if(this.$route.query.song === idx) { return; }
       if(this.$route.query.playlist === 'all') {
-        this.$router.push({path: 'home', query: {playlist: 'all', song: idx}});
+        this.$router.push({query: {playlist: 'all', song: idx}});
         return;
       }
-      this.$router.push({path: 'home', query: {playlist: this.selectedPlaylistIndex, song: idx}})
+      this.$router.push({query: {playlist: this.selectedPlaylistIndex, song: idx}})
     },
     listAllSongsHandler() {
       globalStore.setSelectedPlaylist();
       this.songs = globalStore.selectedPlaylistSongs;
-      if(this.$route.path !== '/home' || this.$route.query.playlist === 'all') { return; }
+      if(this.$route.query.playlist === 'all') { return; }
       this.$router.push({path: 'home', query: {playlist: 'all', song: 'no change'}})
     }
   }

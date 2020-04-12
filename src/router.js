@@ -2,7 +2,7 @@ import VueRouter from 'vue-router';
 import home from './components/Home';
 import playlist from './components/playlist/Playlist';
 import create from './components/playlist/Create';
-//import edit from './components/playlist/Edit';
+import edit from './components/playlist/Edit';
 import NotFound from './components/NotFound';
 
 const router = new VueRouter({
@@ -45,7 +45,7 @@ const router = new VueRouter({
               },
               {
                 path: 'edit',
-                component: create
+                component: edit
               }
             ]
           },
