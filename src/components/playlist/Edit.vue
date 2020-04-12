@@ -34,7 +34,7 @@
           <div v-if="!$v.imgUrl.url" class="text-danger">Enter valid URL</div>
         </template>
       </div>
-      <button class="btn btn-primary">Save</button>
+      <button class="btn btn-primary">Edit</button>
     </form>
     <hr />
     <add-song @addSong="editHandler($event)"></add-song>

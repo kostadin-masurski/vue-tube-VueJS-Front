@@ -3,11 +3,11 @@
     <app-navigation></app-navigation>
     <div class="w-100">
       <div class="row">
-        <div class="col-sm-12 col-md-2">
+        <div class="col-sm-6 col-md-2">
           <app-playlists :playlists="playlists" 
           @selectPlaylist="selectPlaylistHandler($event)"></app-playlists>
         </div>
-        <div class="col-sm-12 col-md-2">
+        <div class="col-sm-6 col-md-2">
           <app-songs :songs="songs" 
           @selectSong="selectSongHandler($event)" @listAllSongs="listAllSongsHandler($event)"></app-songs>
         </div>
