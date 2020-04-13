@@ -12,12 +12,14 @@
           @selectSong="selectSongHandler($event)" @listAllSongs="listAllSongsHandler($event)"></app-songs>
         </div>
         <div class="col-sm-12 col-md-8">
-        <iframe v-if="selectedSong && this.$route.path !=='/home'" 
-        :src="'https://www.youtube.com/embed/' + selectedSong.youtubeIdent + '?autoplay=1'" 
-        frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope" allowfullscreen>
-        </iframe>
-        <router-view></router-view>
-        <hr />
+        <h1 v-if="selectedSong" class="text-left">{{selectedSong.artist}} - {{selectedSong.name}}</h1>
+          <iframe v-if="selectedSong" 
+          :class="{'full-frame': this.$route.path ==='/home', 'half-frame': this.$route.path !=='/home'}"
+          :src="'https://www.youtube.com/embed/' + selectedSong.youtubeIdent + '?autoplay=1'" 
+          frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope" allowfullscreen>
+          </iframe>
+          <router-view></router-view>
+          <hr />
         </div>
       </div>
     </div>
@@ -72,7 +74,7 @@ export default {
       globalStore.setSelectedPlaylist();
       this.songs = globalStore.selectedPlaylistSongs;
       if(this.$route.query.playlist === 'all') { return; }
-      this.$router.push({path: 'home', query: {playlist: 'all', song: 'no change'}})
+      this.$router.push({query: {playlist: 'all', song: 'no change'}})
     }
   }
 };
@@ -102,7 +104,13 @@ nav {
   z-index: 1;
 }
 
-iframe {
+.full-frame {
+  width: 100%;
+  height: 71%;
+  padding: 0.4%;
+}
+
+.half-frame {
   width: 50%;
   height: 30%;
   padding: 0.4%;

@@ -1,9 +1,7 @@
 <template>
         <div>
-        <app-player v-if="selectedSong"
-        :selectedSong="selectedSong" :selectedPlaylist="selectedPlaylist"></app-player>
-        <app-selected-playlist v-else-if="selectedPlaylist"
-        :selectedPlaylist="selectedPlaylist"></app-selected-playlist>
+        <app-selected-playlist v-if="selectedPlaylist"
+        :selectedPlaylist="selectedPlaylist" :selectedSong="selectedSong"></app-selected-playlist>
         <app-banner v-else></app-banner>
         </div>
 </template>
@@ -11,14 +9,12 @@
 <script>
 import globalStore from '../store/global';
 import AppSelectedPlaylist from "./items/Selected-playlist.vue";
-import AppPlayer from "./items/Player.vue";
 import AppBanner from "./items/Banner.vue";
 
 export default {
   name: "Home",
   components: {
     AppSelectedPlaylist,
-    AppPlayer,
     AppBanner
   },
   data() {

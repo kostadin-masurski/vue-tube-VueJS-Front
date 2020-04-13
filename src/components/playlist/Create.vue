@@ -15,7 +15,7 @@
         />
         <template v-if="$v.name.$error">
           <div v-if="!$v.name.required" class="text-danger">Name is required!</div>
-          <div v-if="!$v.name.minLength" class="text-danger">Name should be more than 3 symbols!</div>
+          <div v-if="!$v.name.minLength" class="text-danger">Name should be more than 2 symbols!</div>
           <div v-if="!$v.name.maxLength" class="text-danger">Name should not be more than 50 symbols!</div>
         </template>
       </div>
@@ -33,7 +33,7 @@
           <div v-if="!$v.imgUrl.url" class="text-danger">Enter valid URL</div>
         </template>
       </div>
-      <button class="btn btn-primary">Create</button>
+      <button :disabled="$v.$invalid" class="btn btn-success">Create</button>
     </form>
   </div>
 </template>
@@ -43,8 +43,8 @@ import Vue from "vue";
 import Vuelidate from "vuelidate";
 import { required, minLength, maxLength, url } from "vuelidate/lib/validators";
 import { PlaylistService } from "../../services/PlaylistService";
-import globalStore from "../../store/global"
-import router from "../../router";
+import globalStore from "../../store/global";
+import router from "../../router"
 
 Vue.use(Vuelidate);
 
@@ -59,7 +59,7 @@ export default {
   validations: {
     name: {
       required,
-      minLength: minLength(3),
+      minLength: minLength(2),
       maxLength: maxLength(50)
     },
     imgUrl: {
@@ -75,11 +75,10 @@ export default {
       let { name, imgUrl } = this;
       PlaylistService.create({ name, imgUrl }).then(
         response => {
-          console.log(response);
-          PlaylistService.loadAll().then(response => {
-            globalStore.setPlaylists(response.data);
-            router.push("/home");
-          });
+          response.data.songs = [];
+          globalStore.playlists.push(response.data);
+          globalStore.setSelectedPlaylist(response.data);
+          router.push("edit");
         },
         err => console.log(err)
       );

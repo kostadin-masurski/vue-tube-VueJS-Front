@@ -48,7 +48,7 @@ export default {
             required: true
         },
         selectedSong: {
-            type: Object
+            type: [Object, Boolean]
         }
     },
     data() {

@@ -6,6 +6,7 @@
         <label for="playlist">Playlist</label>
         <input
           v-model="name"
+          @blur="$v.name.$touch"
           type="text"
           id="playlist"
           class="form-control"
@@ -14,17 +15,15 @@
         />
         <template v-if="$v.name.$error">
           <div v-if="!$v.name.required" class="text-danger">Name is required!</div>
-          <div v-if="!$v.name.minLength" class="text-danger">Name should be more than 3 symbols!</div>
-          <div
-            v-if="!$v.name.maxLength"
-            class="text-danger"
-          >Name should not be more than 50 symbols!</div>
+          <div v-if="!$v.name.minLength" class="text-danger">Name should be more than 2 symbols!</div>
+          <div v-if="!$v.name.maxLength" class="text-danger">Name should not be more than 50 symbols!</div>
         </template>
       </div>
       <div class="form-group">
         <label for="imageUrl">Image URL</label>
         <input
           v-model="imgUrl"
+          @blur="$v.imgUrl.$touch"
           type="text"
           id="imageUrl"
           class="form-control"
@@ -34,7 +33,7 @@
           <div v-if="!$v.imgUrl.url" class="text-danger">Enter valid URL</div>
         </template>
       </div>
-      <button class="btn btn-primary">Edit</button>
+      <button :disabled="$v.$invalid" class="btn btn-success">Edit</button>
     </form>
     <hr />
     <add-song @addSong="editHandler($event)"></add-song>
@@ -83,7 +82,6 @@ export default {
       this.selectedPlaylist.imgUrl = this.imgUrl;
       if(song.name) {
         this.selectedPlaylist.songs.push(song);
-        console.log('in if ' +  song.name);
       }
       PlaylistService.edit(this.selectedPlaylist).then(() => {
           PlaylistService.loadAll().then(response => {

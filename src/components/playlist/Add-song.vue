@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button @click="toggleForm" v-text="addForm" type="button" class="btn btn-primary"></button>
-    <button type="button" class="btn btn-primary">Add: {{selectedSong.artist}} - {{selectedSong.name}}</button>
+    <button @click="toggleForm" v-text="addForm" type="button" class="btn btn-success"></button>
+    <button v-show="addSelected" @click="addSelectedSong" type="button" class="btn btn-success">Add: {{selectedSong.artist}} - {{selectedSong.name}}</button>
     <div v-show="addForm === 'Hide Add Form'">
     <h1 class="text-italic">Add new song</h1>
     <form @submit.prevent="addSongHandler">
@@ -9,6 +9,7 @@
         <label for="song">Song</label>
         <input
           v-model="name"
+          @blur="$v.name.$touch"
           type="text"
           id="song"
           class="form-control"
@@ -17,17 +18,15 @@
         />
         <template v-if="$v.name.$error">
           <div v-if="!$v.name.required" class="text-danger">Name is required!</div>
-          <div v-if="!$v.name.minLength" class="text-danger">Name should be more than 3 symbols!</div>
-          <div
-            v-if="!$v.name.maxLength"
-            class="text-danger"
-          >Name should not be more than 50 symbols!</div>
+          <div v-if="!$v.name.minLength" class="text-danger">Name should be more than 2 symbols!</div>
+          <div v-if="!$v.name.maxLength" class="text-danger">Name should not be more than 50 symbols!</div>
         </template>
       </div>
       <div class="form-group">
         <label for="artist">Artist</label>
         <input
           v-model="artist"
+          @blur="$v.artist.$touch"
           type="text"
           id="artist"
           class="form-control"
@@ -36,17 +35,15 @@
         />
         <template v-if="$v.artist.$error">
           <div v-if="!$v.artist.required" class="text-danger">Artist is required!</div>
-          <div v-if="!$v.artist.minLength" class="text-danger">Artist should be more than 1 symbols!</div>
-          <div
-            v-if="!$v.artist.maxLength"
-            class="text-danger"
-          >Artist should not be more than 50 symbols!</div>
+          <div v-if="!$v.artist.minLength" class="text-danger">Artist should be more than 1 symbol!</div>
+          <div v-if="!$v.artist.maxLength" class="text-danger">Artist should not be more than 50 symbols!</div>
         </template>
       </div>
       <div class="form-group">
         <label for="youtubeIdent">Youtube ID or URL</label>
         <input
           v-model="youtubeIdent"
+          @blur="$v.youtubeIdent.$touch"
           type="text"
           id="youtubeIdent"
           class="form-control"
@@ -54,18 +51,16 @@
         />
         <template v-if="$v.youtubeIdent.$error">
           <div v-if="!$v.youtubeIdent.required" class="text-danger">Youtube ID is required!</div>
-          <div
-            v-if="!$v.youtubeIdent.minLength"
-            class="text-danger"
-          >Youtube ID should be more than 11 symbols!</div>
+          <div v-if="!$v.youtubeIdent.minLength" class="text-danger">Youtube ID should be more than 10 symbols!</div>
         </template>
       </div>
       <div class="form-group">
-        <label for="songImageUrl">Pictute URL</label>
+        <label for="imgUrl">Pictute URL</label>
         <input
           v-model="imgUrl"
+          @blur="$v.imgUrl.$touch"
           type="text"
-          id="songImageUrl"
+          id="imgUrl"
           class="form-control"
           placeholder="https://..."
         />
@@ -73,7 +68,7 @@
           <div v-if="!$v.imgUrl.url" class="text-danger">Enter valid URL</div>
         </template>
       </div>
-      <button class="btn btn-primary">Add</button>
+      <button :disabled="$v.$invalid" class="btn btn-success">Add</button>
     </form>
   </div>
   </div>
@@ -93,14 +88,34 @@ export default {
   data() {
     return {
       addForm: 'Add new song',
-      //addSelected: true,
+      addSelected: globalStore.selectedPlaylist.songs.filter(song => song.youtubeIdent === globalStore.selectedSong.youtubeIdent).length === 0,
+      editPlaylist: globalStore.selectedPlaylist,
       selectedPlaylist: globalStore.selectedPlaylist,
       selectedSong: globalStore.selectedSong,
-      name: globalStore.selectedSong.name,
-      artist: globalStore.selectedSong.artist,
-      imgUrl: globalStore.selectedSong.imgUrl,
-      youtubeIdent: globalStore.selectedSong.youtubeIdent
+      name: '',
+      artist: '',
+      imgUrl: '',
+      youtubeIdent: ''
     };
+  },
+  validations: {
+    name: {
+      required,
+      minLength: minLength(3),
+      maxLength: maxLength(50)
+    },
+    artist: {
+      required,
+      minLength: minLength(2),
+      maxLength: maxLength(50)
+    },
+    youtubeIdent: {
+      required,
+      minLength: minLength(11)
+    },
+    imgUrl: {
+      url
+    }
   },
   watch: {
     $route() {
@@ -116,39 +131,20 @@ export default {
       } else {
         this.selectedSong = globalStore.allSongs[this.$route.query.song];
       }
-      this.name = this.selectedSong.name;
-      this.artist = this.selectedSong.artist;
-      this.imgUrl = this.selectedSong.imgUrl;
-      this.youtubeIdent = this.selectedSong.youtubeIdent;
-    }
-  },
-  validations: {
-    name: {
-      required,
-      minLength: minLength(3),
-      maxLength: maxLength(50)
-    },
-    artist: {
-      required,
-      minLength: minLength(1),
-      maxLength: maxLength(50)
-    },
-    youtubeIdent: {
-      required,
-      minLength: minLength(11)
-    },
-    imgUrl: {
-      url
+      this.addSelected = this.editPlaylist.songs.filter(song => 
+      song.youtubeIdent === globalStore.selectedSong.youtubeIdent).length === 0;
     }
   },
   methods: {
     toggleForm() {
-      //console.log(globalStore.selectedPlaylist.songs.filter(song => song.youtubeIdent === globalStore.selectedSong.youtubeIdent));
       if(this.addForm === 'Add new song') {
         this.addForm = 'Hide Add Form';
       }else {
         this.addForm = 'Add new song';
       }
+    },
+    addSelectedSong(){
+      this.$emit("addSong", this.selectedSong);
     },
     addSongHandler() {
       this.$v.$touch();
@@ -156,25 +152,23 @@ export default {
         return;
       }
       this.youtubeIdent = this.youtubeIdent.substr(this.youtubeIdent.length - 11);
-      if (this.selectedSong.name) {
-        this.selectedSong = {
-          name: this.name,
-          artist: this.artist,
-          youtubeIdent: this.youtubeIdent,
-          imgUrl: this.imgUrl
-        };
-      }
-      if (!this.selectedSong.imgUrl) {
-        this.selectedSong.imgUrl =
+      let newSong = {
+       name: this.name,
+       artist: this.artist,
+       youtubeIdent: this.youtubeIdent,
+       imgUrl: this.imgUrl
+      };
+      if (newSong.imgUrl) {
+        newSong.imgUrl =
           "https://ae01.alicdn.com/kf/HTB1WQdVSXXXXXbJXFXXq6xXFXXXS/3d-DJ.jpg_960x960.jpg";
       }
-      SongService.add(this.selectedSong).then(
+      SongService.add(newSong).then(
         () => {
-          SongService.getSong(this.selectedSong.youtubeIdent).then(
+          SongService.getSong(newSong.youtubeIdent).then(
             response => {
-              this.selectedSong = response.data;
-              globalStore.setSelectedSong(this.selectedSong);
-              this.$emit("addSong", this.selectedSong);
+              newSong = response.data;
+              globalStore.setSelectedSong(newSong);
+              this.$emit("addSong", newSong);
             },
             err => console.log(err)
           );
