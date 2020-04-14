@@ -41,9 +41,8 @@
 import Vue from "vue";
 import Vuelidate from "vuelidate";
 import { required, minLength, maxLength, email, sameAs } from "vuelidate/lib/validators";
-import { UserService } from "../services/UserService"
-// import globalStore from "../../store/global";
-// import router from "../../router"
+import { UserService } from "../services/UserService";
+import router from "../router";
 
 Vue.use(Vuelidate);
 
@@ -87,9 +86,13 @@ export default {
       UserService.register({ username, email, password, confirmPassword }).then(
         response => {
           console.log(response);
-          //router.push("edit");
+          router.push("/home");
         },
-        err => console.log(err)
+        err => {
+          console.log(err);
+          this.serverStatus = 'Unsuccessful registration. Try other Username or check your Email address!';
+          //this.serverStatus = err['error']['message'];
+        }
       );
     }
   }

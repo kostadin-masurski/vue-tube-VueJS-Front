@@ -1,6 +1,6 @@
 <template>
   <div :class="{'half-banner': selectedSong.name, 'home-div': true}">
-    <h1 v-if="isLogged" class="text-center home-h1">
+    <h1 v-if="user" class="text-center home-h1">
       Vue Tuba - <router-link to="/playlist/create" class="link">Create</router-link> your own YouTube playlists!
       <br />No advertising! Enjoy!
     </h1>
@@ -17,7 +17,7 @@ import globalStore from "../../store/global"
 export default {
   data() {
     return {
-      isLogged: false,
+      user: sessionStorage.username,
       selectedSong: globalStore.selectedSong
     }
   },
@@ -33,7 +33,7 @@ export default {
 .home-div {
   background-image: url(../../assets/151642953.jpg);
   background-size: cover;
-  height: 90vh;
+  height: 89vh;
 }
 .half-banner {
   height: 19vh;

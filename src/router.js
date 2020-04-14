@@ -1,4 +1,5 @@
 import VueRouter from 'vue-router';
+import banner from './components/items/Banner';
 import home from './components/Home';
 import playlist from './components/playlist/Playlist';
 import create from './components/playlist/Create';
@@ -10,7 +11,8 @@ const router = new VueRouter({
     routes: [
         {
             path: '/',
-            redirect: '/home',
+            component: banner
+            //redirect: '/home',
             // pathMatch: 'full',
             // component: WelcomeComponent,
             // canActivate: [AuthGuard],

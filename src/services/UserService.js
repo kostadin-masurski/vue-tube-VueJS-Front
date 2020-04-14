@@ -6,7 +6,10 @@ Vue.use(VueAxios, axios)
 
 export const UserService = {
     login(user) {
-        return Vue.axios.post('http://localhost:8080/api/login', user);
+        let loginFormData = new FormData;
+        loginFormData.append("username", user.username);
+        loginFormData.append("password", user.password);
+        return Vue.axios.post('http://localhost:8080/api/login', loginFormData);
     },
     
     register(user) {

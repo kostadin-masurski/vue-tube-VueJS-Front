@@ -15,26 +15,26 @@
         <h2 class="text-bold amount">
           <span :style="{color: color}">{{selectedPlaylist.rate}}</span>/10
         </h2>
-        <form class="form-inline">
-          <div class="form-group">
-            <label class="sr-only" for="rating"></label>
-            <div class="input-group">
-              <input
-                type="number"
-                min="0"
-                max="10"
-                step="0.1"
-                class="form-control"
-                id="rating"
-                placeholder="Rate"
-              />
+        <div v-if="user">
+          <form class="form-inline">
+            <div class="form-group">
+              <label class="sr-only" for="rating"></label>
+              <div class="input-group">
+                <input
+                  type="number"
+                  min="0"
+                  max="10"
+                  step="0.1"
+                  class="form-control"
+                  id="rating"
+                  placeholder="Rate"
+                />
+              </div>
             </div>
-          </div>
-          <button type="button" class="btn btn-success">
-            Rate Playlist
-          </button>
-          <router-link to="/playlist/edit" class="btn btn-primary">Edit Playlist</router-link>
-        </form>
+            <button type="button" class="btn btn-success">Rate Playlist</button>
+            <router-link to="/playlist/edit" class="btn btn-primary">Edit Playlist</router-link>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -42,21 +42,22 @@
 
 <script>
 export default {
-    props: {
-        selectedPlaylist: {
-            type: Object,
-            required: true
-        },
-        selectedSong: {
-            type: [Object, Boolean]
-        }
+  props: {
+    selectedPlaylist: {
+      type: Object,
+      required: true
     },
-    data() {
-        return {
-          color: 'green'
-        }
+    selectedSong: {
+      type: [Object, Boolean]
     }
-}
+  },
+  data() {
+    return {
+      user: sessionStorage.username,
+      color: "green"
+    };
+  }
+};
 </script>
 
 <style scoped>

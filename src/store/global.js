@@ -8,7 +8,7 @@ const global = new Vue({
         allSongs: [],
         selectedPlaylistSongs: [],
         selectedSong: {},
-        user: NOT_SET
+        user: false
     },
     methods: {
         setPlaylists(playlists) {
