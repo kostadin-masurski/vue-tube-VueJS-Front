@@ -1,7 +1,10 @@
 <template>
   <div>
     <button @click="toggleForm" v-text="addForm" type="button" class="btn btn-success"></button>
-    <button v-show="addSelected" @click="addSelectedSong" type="button" class="btn btn-success">Add: {{selectedSong.artist}} - {{selectedSong.name}}</button>
+    <button v-show="selectedSong.name && addSelected" @click="addSelectedSong" 
+    type="button" class="btn btn-success">Add: {{selectedSong.artist}} - {{selectedSong.name}}</button>
+    <button v-show="selectedSong.name && !addSelected" @click="addSelectedSong" 
+    type="button" class="btn btn-danger">Remove: {{selectedSong.artist}} - {{selectedSong.name}}</button>
     <div v-show="addForm === 'Hide Add Form'">
     <h1 class="text-italic">Add new song</h1>
     <form @submit.prevent="addSongHandler">
@@ -145,6 +148,7 @@ export default {
     },
     addSelectedSong(){
       this.$emit("addSong", this.selectedSong);
+      this.addSelected = globalStore.selectedPlaylist.songs.filter(song => song.youtubeIdent === globalStore.selectedSong.youtubeIdent).length === 0;
     },
     addSongHandler() {
       this.$v.$touch();

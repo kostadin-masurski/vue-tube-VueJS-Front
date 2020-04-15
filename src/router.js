@@ -1,9 +1,7 @@
 import VueRouter from 'vue-router';
+import globalStore from './store/global';
 import banner from './components/items/Banner';
 import home from './components/Home';
-import playlist from './components/playlist/Playlist';
-import create from './components/playlist/Create';
-import edit from './components/playlist/Edit';
 import NotFound from './components/NotFound';
 
 const router = new VueRouter({
@@ -11,18 +9,17 @@ const router = new VueRouter({
     routes: [
         {
             path: '/',
-            component: banner
-            //redirect: '/home',
-            // pathMatch: 'full',
-            // component: WelcomeComponent,
-            // canActivate: [AuthGuard],
-            // data: {
-            //   isLogged: false
-            // }
+            component: banner,
+            meta: {
+              authenticated: false
+            }
           },
           {
               path: '/home',
-              component: home
+              component: home,
+              meta: {
+                authenticated: true
+              }
           },
           {
             path: '/login',
@@ -31,23 +28,28 @@ const router = new VueRouter({
           {
             path: '/register',
             component: () => import('./components/Register'),
-            // canActivate: [AuthGuard],
-            // data: {
-            //   isLogged: false
-            // }
+            meta: {
+              authenticated: false
+            }
           },
           {
             path: '/playlist/',
             redirect: '/playlist/create',
-            component: playlist,
+            component: () => import('./components/playlist/Playlist'),
             children: [
               {
                 path: 'create',
-                component: create
+                component: () => import('./components/playlist/Create'),
+                meta: {
+                  authenticated: true
+                }
               },
               {
                 path: 'edit',
-                component: edit
+                component: () => import('./components/playlist/Edit'),
+                meta: {
+                  authenticated: true
+                }
               }
             ]
           },
@@ -56,6 +58,27 @@ const router = new VueRouter({
             component: NotFound
           }
     ]
+});
+
+router.beforeEach((to, from, next) => {
+
+  function proceed(unsub) {
+    const { authenticated } = to.meta;
+    const isLogged = globalStore.isLogged;
+    if (
+      (authenticated && isLogged) ||
+      (!authenticated && !isLogged)
+    ) { next(); return; }
+
+    if (unsub) { unsub(); }
+    next(authenticated ? '/' : '/home');
+  }
+
+  if (globalStore.isUserSet) { proceed(); return; }
+  const unsub = globalStore.$watch('user', () => {
+    proceed(unsub);
+  });
+
 });
 
 export default router;

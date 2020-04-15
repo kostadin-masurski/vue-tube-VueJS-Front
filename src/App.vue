@@ -14,7 +14,7 @@
         <div class="col-sm-12 col-md-8">
         <h1 v-if="selectedSong" class="text-left">{{selectedSong.artist}} - {{selectedSong.name}}</h1>
           <iframe v-if="selectedSong" 
-          :class="{'full-frame': this.$route.path ==='/home', 'half-frame': this.$route.path !=='/home'}"
+          :class="{'half-frame': true, 'full-frame': this.$route.path ==='/home' || this.$route.path ==='/'}"
           :src="'https://www.youtube.com/embed/' + selectedSong.youtubeIdent + '?autoplay=1'" 
           frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope" allowfullscreen>
           </iframe>
@@ -104,15 +104,15 @@ nav {
   z-index: 1;
 }
 
-.full-frame {
-  width: 100%;
-  height: 71%;
-  padding: 0.4%;
-}
-
 .half-frame {
   width: 50%;
   height: 30%;
+  padding: 0.4%;
+}
+
+.full-frame {
+  width: 100%;
+  height: 71%;
   padding: 0.4%;
 }
 

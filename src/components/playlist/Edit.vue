@@ -80,13 +80,19 @@ export default {
       }
       this.selectedPlaylist.name = this.name;
       this.selectedPlaylist.imgUrl = this.imgUrl;
-      if(song.name) {
+      // if(song) {
+      //   this.selectedPlaylist.songs.push(song);
+      // }
+      if(this.selectedPlaylist.songs.filter(s => s.youtubeIdent === song.youtubeIdent).length === 0) {
         this.selectedPlaylist.songs.push(song);
+      } else {
+        //this.selectedPlaylist.songs.pop(song);
+        this.selectedPlaylist.songs = this.selectedPlaylist.songs.filter(s => s.youtubeIdent !== song.youtubeIdent);
       }
       PlaylistService.edit(this.selectedPlaylist).then(() => {
           PlaylistService.loadAll().then(response => {
             globalStore.setPlaylists(response.data);
-            globalStore.selectedPlaylist = this.selectedPlaylist;
+            globalStore.setSelectedPlaylist(this.selectedPlaylist);
           });
         },
         err => console.log(err)

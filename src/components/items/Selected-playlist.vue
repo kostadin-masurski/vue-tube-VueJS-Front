@@ -12,28 +12,8 @@
           alt="Playlist Image"
           :class="{'small-playlist': selectedSong, 'img-responsive img-details': true}"
         />
-        <h2 class="text-bold amount">
-          <span :style="{color: color}">{{selectedPlaylist.rate}}</span>/10
-        </h2>
-        <div v-if="user">
-          <form class="form-inline">
-            <div class="form-group">
-              <label class="sr-only" for="rating"></label>
-              <div class="input-group">
-                <input
-                  type="number"
-                  min="0"
-                  max="10"
-                  step="0.1"
-                  class="form-control"
-                  id="rating"
-                  placeholder="Rate"
-                />
-              </div>
-            </div>
-            <button type="button" class="btn btn-success">Rate Playlist</button>
-            <router-link to="/playlist/edit" class="btn btn-primary">Edit Playlist</router-link>
-          </form>
+        <div v-if="user">          
+          <router-link to="/playlist/edit" class="btn btn-primary">Edit Playlist</router-link>
         </div>
       </div>
     </div>
@@ -53,8 +33,7 @@ export default {
   },
   data() {
     return {
-      user: sessionStorage.username,
-      color: "green"
+      user: sessionStorage.username
     };
   }
 };
@@ -68,5 +47,9 @@ export default {
 
 .small-playlist-div {
   display: inline-flex;
+}
+
+.btn {
+  margin: 10px;
 }
 </style>

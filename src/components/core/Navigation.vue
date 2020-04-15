@@ -18,7 +18,6 @@
                     <router-link to="/home" class="text-light"><h3>Welcome {{user}}</h3></router-link>
                     <router-link to="/playlist/create" class="btn btn-light">Create New Playlist</router-link>
                     <input class="btn btn-light" type="button" value="Logout"  @click="logout()">
-                    <!-- <a class="col-1 form-control btn" href="/logout" sec:authorize="isAuthenticated()">Log Out</a> -->
                 </form>
                 <div v-else>
                     <form @submit.prevent="login" v-if="true" class="row form-inline my-2 my-md-0" method="post">
@@ -68,7 +67,7 @@ export default {
         },
         logout() { 
             this.user = '';
-            globalStore.user = '';
+            globalStore.clearUser();
             sessionStorage.clear();
             router.push('/');
             }
